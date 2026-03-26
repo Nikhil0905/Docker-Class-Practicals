@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker DevOps Journey | LPU</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="btn-close"></span>
+                <span class="btn-minimize"></span>
+                <span class="btn-maximize"></span>
+            </div>
+            <div class="terminal-title">docker-learning-journey.sh</div>
+        </div>
+        
+        <div class="content-wrapper">
+            <!-- Hero Section -->
+            <header class="hero">
+                <div class="hero-badge">
+                    <div class="badge-icon">🐳</div>
+                    <div class="badge-text">DOCKER DEVOPS</div>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-prefix">$</span>
+                    <span class="title-text">My Docker Journey</span>
+                    <span class="cursor-blink">_</span>
+                </h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Student @</span>
+                        <span class="meta-value">{{ student.university }}</span>
+                    </div>
+                    <div class="meta-divider">|</div>
+                    <div class="meta-item">
+                        <span class="meta-label">Faculty:</span>
+                        <span class="meta-value">{{ student.faculty }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Student Reflection -->
+            <section class="reflection-card">
+                <div class="card-header">
+                    <div class="header-icon">💭</div>
+                    <h2>My Experience</h2>
+                </div>
+                <div class="reflection-content">
+                    <p>{{ student.reflection }}</p>
+                </div>
+                <div class="reflection-footer">
+                    <div class="footer-tag">{{ student.course }}</div>
+                </div>
+            </section>
+
+            <!-- Class Notes Section -->
+            <section class="notes-section">
+                <div class="section-header">
+                    <div class="header-decoration"></div>
+                    <h2 class="section-title">
+                        <span class="title-icon">📚</span>
+                        Class Notes & Learnings
+                    </h2>
+                    <div class="header-decoration"></div>
+                </div>
+
+                <div class="notes-grid">
+                    {% for note in notes %}
+                    <article class="note-card" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+                        <div class="note-week">{{ note.date }}</div>
+                        <h3 class="note-title">{{ note.title }}</h3>
+                        <p class="note-content">{{ note.content }}</p>
+                        <div class="note-topics">
+                            {% for topic in note.topics %}
+                            <span class="topic-tag">{{ topic }}</span>
+                            {% endfor %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Command Reference -->
+            <section class="commands-section">
+                <div class="section-header">
+                    <div class="header-decoration"></div>
+                    <h2 class="section-title">
+                        <span class="title-icon">⚡</span>
+                        Essential Docker Commands
+                    </h2>
+                    <div class="header-decoration"></div>
+                </div>
+
+                <div class="commands-grid">
+                    {% for cmd in commands %}
+                    <div class="command-card" style="animation-delay: {{ loop.index0 * 0.05 }}s">
+                        <div class="command-line">
+                            <span class="prompt">$</span>
+                            <code class="command-text">{{ cmd.cmd }}</code>
+                        </div>
+                        <p class="command-desc">{{ cmd.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- User Uploads Section -->
+            <section class="uploads-section" style="margin-top: 3rem;">
+                <div class="section-header">
+                    <div class="header-decoration"></div>
+                    <h2 class="section-title">
+                        <span class="title-icon">📁</span>
+                        User Data (Docker Volumes)
+                    </h2>
+                    <div class="header-decoration"></div>
+                </div>
+                
+                <div class="upload-container" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3>Upload New File</h3>
+                    <form action="/upload" method="post" enctype="multipart/form-data" style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                        <input type="file" name="file" required style="color: white;">
+                        <button type="submit" style="background: #2496ed; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold;">Upload via Volume</button>
+                    </form>
+                </div>
+
+                <div class="uploaded-files-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                    {% if uploaded_files %}
+                        {% for file in uploaded_files %}
+                        <div class="file-card" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📄</div>
+                            <a href="{{ url_for('download_file', name=file) }}" target="_blank" style="color: #61dafb; text-decoration: none; word-break: break-all;">{{ file }}</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="grid-column: 1 / -1; text-align: center; color: #a0aec0;">No files uploaded yet. Try uploading one!</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <div class="docker-logo">🐳 DOCKER</div>
+                        <p class="footer-text">Containerization made simple</p>
+                    </div>
+                    <div class="footer-right">
+                        <div class="footer-info">
+                            <p>Built with ❤️ for DevOps Learning</p>
+                            <p class="footer-credit">Lovely Professional University</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-terminal">
+                    <span class="terminal-text">>>> docker run --rm -p 5000:5000 student-docker-journey:latest</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="background-pattern"></div>
+</body>
+</html>
