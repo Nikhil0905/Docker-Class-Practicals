@@ -1,4 +1,4 @@
-# 🚀 DevOps Python Lab – Learning Repository
+# DevOps Python Lab – Learning Repository
 
 This repository documents my **daily hands-on journey in DevOps, Docker, and secure containerization**, along with faculty-provided resources and structured experiments.
 
