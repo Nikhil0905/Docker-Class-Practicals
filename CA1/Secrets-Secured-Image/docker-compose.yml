@@ -1,0 +1,27 @@
+services:
+  python-app:
+    build: .
+    container_name: python-app
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python-app.py:/python-app/python-app.py
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - "3306:3306"
