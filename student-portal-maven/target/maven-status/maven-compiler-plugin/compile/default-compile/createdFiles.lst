@@ -1,0 +1,4 @@
+com/example/studentportal/StudentPortalApplication.class
+com/example/studentportal/controller/HomeController.class
+com/example/studentportal/model/Feedback.class
+com/example/studentportal/service/MessageService.class
